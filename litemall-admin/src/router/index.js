@@ -221,6 +221,26 @@ export const asyncRouterMap = [
           title: '关键词',
           noCache: true
         }
+      },
+      {
+        path: 'message',
+        component: () => import('@/views/mall/message'),
+        name: 'message',
+        meta: {
+          perms: ['GET /admin/message/list'],
+          title: '留言管理',
+          noCache: true
+        }
+      },
+      {
+        path: 'customized',
+        component: () => import('@/views/mall/customized'),
+        name: 'customized',
+        meta: {
+          perms: ['GET /admin/customized/list'],
+          title: '定制管理',
+          noCache: true
+        }
       }
     ]
   },
@@ -276,6 +296,50 @@ export const asyncRouterMap = [
           title: '商品评论',
           noCache: true
         }
+      }
+    ]
+  },
+  {
+    path: '/product',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'productManage',
+    meta: {
+      title: '产品管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/product/list'),
+        name: 'productList',
+        meta: {
+          perms: ['GET /admin/product/list', 'POST /admin/product/delete'],
+          title: '产品列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/product/create'),
+        name: 'productCreate',
+        meta: {
+          perms: ['POST /admin/product/create'],
+          title: '产品发布',
+          noCache: true
+        }
+      },
+      {
+        path: 'edit',
+        component: () => import('@/views/product/edit'),
+        name: 'productEdit',
+        meta: {
+          perms: ['GET /admin/product/detail', 'POST /admin/product/update'],
+          title: '产品编辑',
+          noCache: true
+        },
+        hidden: true
       }
     ]
   },

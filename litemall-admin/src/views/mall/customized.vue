@@ -3,21 +3,29 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.id" clearable class="filter-item" style="width: 200px;" placeholder="请输入品牌商ID"/>
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入品牌商名称"/>
-      <el-button v-permission="['GET /admin/brand/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/brand/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-select v-model="listQuery.typeArray" style="width: 200px" class="filter-item" placeholder="请选择">
+        <el-option v-for="(key, value) in typeMap" :key="key" :label="key" :value="value"/>
+      </el-select>
+      <el-button v-permission="['GET /admin/customized/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['POST /admin/customized/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="品牌商ID" prop="id"/>
+      <el-table-column align="center" label="定制内容ID" prop="id"/>
 
-      <el-table-column align="center" label="品牌商名称" prop="name"/>
+      <el-table-column align="center" label="类型" prop="type">
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" property="picUrl" label="品牌商图片">
+      <el-table-column align="center" label="标题" prop="title"/>
+
+      <el-table-column align="center" label="英文标题" prop="titleEn"/>
+
+      <el-table-column align="center" property="picUrl" label="图片">
         <template slot-scope="scope">
           <img v-if="scope.row.picUrl" :src="scope.row.picUrl" width="80">
         </template>
@@ -25,12 +33,10 @@
 
       <el-table-column align="center" min-width="400px" label="介绍" prop="desc"/>
 
-      <el-table-column align="center" label="底价" prop="floorPrice"/>
-
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/brand/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/brand/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /admin/customized/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-permission="['POST /admin/customized/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -39,14 +45,19 @@
 
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="品牌商名称" prop="name">
-          <el-input v-model="dataForm.name"/>
+      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px">
+        <el-form-item label="类型" prop="type">
+          <el-select v-model="dataForm.type" placeholder="请选择">
+            <el-option v-for="(key, value) in typeMap" :key="key" :label="key" :value="value"/>
+          </el-select>
         </el-form-item>
-        <el-form-item label="介绍" prop="simpleDesc">
-          <el-input v-model="dataForm.desc"/>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="dataForm.title"/>
         </el-form-item>
-        <el-form-item label="品牌商图片" prop="picUrl">
+        <el-form-item label="英文标题" prop="titleEn">
+          <el-input v-model="dataForm.titleEn"/>
+        </el-form-item>
+        <el-form-item label="图片" prop="picUrl">
           <el-upload
             :headers="headers"
             :action="uploadPath"
@@ -58,8 +69,8 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
-        <el-form-item label="底价" prop="floorPrice">
-          <el-input v-model="dataForm.floorPrice"/>
+        <el-form-item label="介绍" prop="simpleDesc">
+          <editor :init="editorInit" v-model="dataForm.desc"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -73,20 +84,21 @@
 </template>
 
 <style scoped>
-.avatar-uploader .el-upload {
+.avatar-uploader {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  width: 220px;
 }
-.avatar-uploader .el-upload:hover {
+.avatar-uploader :hover {
   border-color: #20a0ff;
 }
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 120px;
+  width: 220px;
   height: 120px;
   line-height: 120px;
   text-align: center;
@@ -99,14 +111,26 @@
 </style>
 
 <script>
-import { listBrand, createBrand, updateBrand, deleteBrand } from '@/api/brand'
-import { uploadPath } from '@/api/storage'
+import { listCustomized, createCustomized, updateCustomized, deleteCustomized } from '@/api/customized'
+import Editor from '@tinymce/tinymce-vue'
+import { createStorage, uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
+const typeMap = {
+  0: '学校定制',
+  1: '酒店定制',
+  2: '企事业单位定制'
+}
+
 export default {
-  name: 'Brand',
-  components: { Pagination },
+  name: 'Customized',
+  components: { Pagination, Editor },
+  filters: {
+    typeFilter(type) {
+      return typeMap[type]
+    }
+  },
   data() {
     return {
       uploadPath,
@@ -116,16 +140,15 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        id: undefined,
-        name: undefined,
-        sort: 'add_time',
+        typeArray: [],
         order: 'desc'
       },
+      typeMap,
       dataForm: {
         id: undefined,
-        name: '',
+        title: '',
+        titleEn: '',
         desc: '',
-        floorPrice: undefined,
         picUrl: undefined
       },
       dialogFormVisible: false,
@@ -135,11 +158,25 @@ export default {
         create: '创建'
       },
       rules: {
-        name: [
-          { required: true, message: '品牌商名称不能为空', trigger: 'blur' }
-        ]
+        type: [{ required: true, message: '请选择', trigger: 'change' }],
+        title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
+        titleEn: [{ required: true, message: '英文标题不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      editorInit: {
+        language: 'zh_CN',
+        convert_urls: false,
+        plugins: ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount'],
+        toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
+        images_upload_handler: function(blobInfo, success, failure) {
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          createStorage(formData).then(res => {
+            success(res.data.data.url)
+          }).catch(() => {
+            failure('上传失败，请重新上传')
+          })
+        }
+      }
     }
   },
   computed: {
@@ -155,7 +192,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listBrand(this.listQuery)
+      listCustomized(this.listQuery)
         .then(response => {
           this.list = response.data.data.list
           this.total = response.data.data.total
@@ -174,9 +211,9 @@ export default {
     resetForm() {
       this.dataForm = {
         id: undefined,
-        name: '',
+        title: '',
+        titleEn: '',
         desc: '',
-        floorPrice: undefined,
         picUrl: undefined
       }
     },
@@ -194,7 +231,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          createBrand(this.dataForm)
+          createCustomized(this.dataForm)
             .then(response => {
               this.list.unshift(response.data.data)
               this.dialogFormVisible = false
@@ -223,7 +260,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateBrand(this.dataForm)
+          updateCustomized(this.dataForm)
             .then(() => {
               for (const v of this.list) {
                 if (v.id === this.dataForm.id) {
@@ -248,7 +285,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteBrand(row)
+      deleteCustomized(row)
         .then(response => {
           this.$notify.success({
             title: '成功',
@@ -263,26 +300,6 @@ export default {
             message: response.data.errmsg
           })
         })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = [
-          '品牌商ID',
-          '品牌商名称',
-          '介绍',
-          '低价',
-          '品牌商图片'
-        ]
-        const filterVal = ['id', 'name', 'desc', 'floorPrice', 'picUrl']
-        excel.export_json_to_excel2(
-          tHeader,
-          this.list,
-          filterVal,
-          '品牌商信息'
-        )
-        this.downloadLoading = false
-      })
     }
   }
 }
