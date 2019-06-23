@@ -118,9 +118,9 @@ import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 const typeMap = {
-  0: '学校定制',
-  1: '酒店定制',
-  2: '企事业单位定制'
+  SCHOOL: '学校定制',
+  HOTEL: '酒店定制',
+  ENT: '企事业单位定制'
 }
 
 export default {
