@@ -16,7 +16,7 @@ export function deleteProduct(data) {
   })
 }
 
-export function publishProduct(data) {
+export function createProduct(data) {
   return request({
     url: '/product/create',
     method: 'post',

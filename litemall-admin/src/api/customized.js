@@ -32,9 +32,9 @@ export function updateCustomized(data) {
   })
 }
 
-export function deleteBrand(data) {
+export function deleteCustomized(data) {
   return request({
-    url: '/brand/delete',
+    url: '/customized/delete',
     method: 'post',
     data
   })
