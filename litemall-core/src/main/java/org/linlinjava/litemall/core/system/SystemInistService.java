@@ -48,10 +48,10 @@ class SystemInistService {
         DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_ORDER_UNCONFIRM, "7");
         DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_ORDER_COMMENT, "7");
         // 订单相关配置默认值
-        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_NAME, "litemall");
-        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_ADDRESS, "上海");
-        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_PHONE, "021-xxxx-xxxx");
-        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_QQ, "738696120");
+        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_NAME, "kudo");
+        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_ADDRESS, "成都");
+        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_PHONE, "028-xxxx-xxxx");
+        DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_MALL_QQ, "11111111");
     }
 
     @Autowired

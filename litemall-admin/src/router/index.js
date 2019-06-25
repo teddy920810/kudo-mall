@@ -164,6 +164,15 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'site',
+        component: () => import('@/views/mall/site'),
+        name: 'site',
+        meta: {
+          title: '网站图文设置',
+          noCache: true
+        }
+      },
+      {
         path: 'region',
         component: () => import('@/views/mall/region'),
         name: 'region',
