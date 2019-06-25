@@ -119,7 +119,7 @@ public class AdminNavController {
         return ResponseUtil.ok();
     }
 
-    //@RequiresPermissions("admin:nav:delete")
+    @RequiresPermissions("admin:nav:delete")
     @RequiresPermissionsDesc(menu={"商场管理" , "导航管理"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallNav nav) {
@@ -131,7 +131,7 @@ public class AdminNavController {
         return ResponseUtil.ok();
     }
 
-    //@RequiresPermissions("admin:nav:list")
+    @RequiresPermissions("admin:nav:list")
     @GetMapping("/l1")
     public Object catL1() {
         // 所有一级分类目录
