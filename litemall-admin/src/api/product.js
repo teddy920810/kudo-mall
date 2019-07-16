@@ -40,9 +40,9 @@ export function editProduct(data) {
   })
 }
 
-export function listCat() {
+export function listSeries() {
   return request({
-    url: '/product/cat',
+    url: '/product/series',
     method: 'get'
   })
 }

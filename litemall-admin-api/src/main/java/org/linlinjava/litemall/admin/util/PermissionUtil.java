@@ -124,6 +124,7 @@ public class PermissionUtil {
                     continue;
                 }
                 GetMapping getMapping = AnnotationUtils.getAnnotation(method, GetMapping.class);
+                System.out.println(getMapping);
                 if (getMapping != null) {
                     api = "GET " + api + getMapping.value()[0];
                     Permission permission = new Permission();

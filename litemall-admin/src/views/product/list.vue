@@ -23,8 +23,8 @@
             <el-form-item label="关键字">
               <span>{{ props.row.keywords }}</span>
             </el-form-item>
-            <el-form-item label="类目ID">
-              <span>{{ props.row.categoryId }}</span>
+            <el-form-item label="系列ID">
+              <span>{{ props.row.seriesId }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -40,7 +40,7 @@
 
       <el-table-column align="center" label="详情" prop="detail">
         <template slot-scope="scope">
-          <el-dialog :visible.sync="detailDialogVisible" title="产品详情">
+          <el-dialog :visible.sync="detailDialogVisible" title="产品详情" width="90%">
             <div v-html="productDetail"/>
           </el-dialog>
           <el-button type="primary" size="mini" @click="showDetail(scope.row.detail)">查看</el-button>

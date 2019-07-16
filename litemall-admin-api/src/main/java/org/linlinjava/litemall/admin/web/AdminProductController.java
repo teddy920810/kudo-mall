@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.service.AdminGoodsService;
+import org.linlinjava.litemall.admin.service.AdminProductService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product")
@@ -28,6 +30,9 @@ public class AdminProductController {
 
     @Autowired
     private AdminGoodsService adminGoodsService;
+
+    @Autowired
+    private AdminProductService adminProductService;
 
     /**
      * 查询产品
@@ -47,7 +52,8 @@ public class AdminProductController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        return productService.querySelective(name, page, limit, sort, order);
+        List<LitemallProduct> productList = productService.querySelective(name, page, limit, sort, order);
+        return ResponseUtil.okList(productList);
     }
 
     /**
@@ -60,7 +66,12 @@ public class AdminProductController {
     @RequiresPermissionsDesc(menu = {"商品管理", "产品管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallProduct product) {
-        return productService.updateById(product);
+        Object error = validate(product);
+        if (error != null) {
+            return error;
+        }
+        productService.updateById(product);
+        return ResponseUtil.ok(product);
     }
 
     /**
@@ -110,8 +121,7 @@ public class AdminProductController {
     @RequiresPermissionsDesc(menu = {"商品管理", "产品管理"}, button = "详情")
     @GetMapping("/detail")
     public Object detail(@NotNull Integer id) {
-        LitemallProduct product = productService.findById(id);
-        return ResponseUtil.ok(product);
+        return adminProductService.detail(id);
     }
 
     private Object validate(LitemallProduct product) {
@@ -140,9 +150,9 @@ public class AdminProductController {
         return null;
     }
 
-    @GetMapping("/cat")
-    public Object list2() {
-        return adminGoodsService.list2();
+    @GetMapping("/series")
+    public Object series() {
+        return adminProductService.list2();
     }
 
 }

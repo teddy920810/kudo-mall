@@ -24,9 +24,11 @@ public class LitemallProductService {
      * @param limit
      * @return
      */
-    public List<LitemallProduct> queryByCategory(Integer catId, int offset, int limit) {
+    public List<LitemallProduct> queryBySeries(Integer catId, int offset, int limit) {
         LitemallProductExample example = new LitemallProductExample();
-        example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
+        if (catId != null){
+            example.or().andSeriesIdEqualTo(catId).andDeletedEqualTo(false);
+        }
         example.setOrderByClause("add_time desc");
         PageHelper.startPage(offset, limit);
 

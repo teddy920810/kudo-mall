@@ -35,7 +35,7 @@ public class AdminLitemallSiteController {
 
     @RequiresPermissions("admin:site:update")
     @RequiresPermissionsDesc(menu={"配置管理" , "网站图文设置"}, button="编辑")
-    @PutMapping()
+    @PostMapping()
     public Object updateMall(@RequestBody String body ) {
         /*List<LitemallSite> data = JacksonUtil.parseObject(body,LitemallSite.class);
         siteService.updateSite(data);*/

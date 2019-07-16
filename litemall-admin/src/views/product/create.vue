@@ -52,11 +52,15 @@
         </el-form-item>
 
         <el-form-item label="所属分类">
-          <el-cascader :options="categoryList" expand-trigger="hover" @change="handleCategoryChange"/>
+          <el-cascader :options="seriesList" expand-trigger="hover" @change="handleSeriesChange"/>
+        </el-form-item>
+
+        <el-form-item label="购买链接">
+          <el-input v-model="product.buyLink"/>
         </el-form-item>
 
         <el-form-item label="产品简介">
-          <el-input v-model="product.brief"/>
+          <el-input v-model="product.brief" type="textarea"/>
         </el-form-item>
 
         <el-form-item label="产品详细介绍">
@@ -119,7 +123,7 @@
 </style>
 
 <script>
-import { createProduct, listCat } from '@/api/product'
+import { createProduct, listSeries } from '@/api/product'
 import { createStorage, uploadPath } from '@/api/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
@@ -135,7 +139,7 @@ export default {
       newKeywordVisible: false,
       newKeyword: '',
       keywords: [],
-      categoryList: [],
+      seriesList: [],
       product: { picUrl: '', gallery: [] },
       rules: {
         name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }]
@@ -170,12 +174,12 @@ export default {
 
   methods: {
     init: function() {
-      listCat().then(response => {
-        this.categoryList = response.data.data.categoryList
+      listSeries().then(response => {
+        this.seriesList = response.data.data.seriesList
       })
     },
-    handleCategoryChange(value) {
-      this.product.categoryId = value[value.length - 1]
+    handleSeriesChange(value) {
+      this.product.seriesId = value[value.length - 1]
     },
     handleCancel: function() {
       this.$router.push({ path: '/product/product' })

@@ -349,6 +349,16 @@ export const asyncRouterMap = [
           noCache: true
         },
         hidden: true
+      },
+      {
+        path: 'series',
+        component: () => import('@/views/product/series'),
+        name: 'series',
+        meta: {
+          perms: ['GET /admin/series/list', 'POST /admin/series/create', 'GET /admin/series/read', 'POST /admin/series/update', 'POST /admin/series/delete'],
+          title: '产品系列',
+          noCache: true
+        }
       }
     ]
   },
