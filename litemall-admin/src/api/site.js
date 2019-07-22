@@ -10,7 +10,7 @@ export function getSite() {
 export function updateSite(data) {
   return request({
     url: '/site',
-    method: 'put',
+    method: 'post',
     data
   })
 }

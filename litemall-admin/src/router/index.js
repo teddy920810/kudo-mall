@@ -168,6 +168,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/mall/site'),
         name: 'site',
         meta: {
+          perms: ['GET /admin/site', 'POST /admin/site'],
           title: '网站图文设置',
           noCache: true
         }

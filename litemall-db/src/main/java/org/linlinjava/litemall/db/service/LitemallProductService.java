@@ -10,29 +10,41 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class LitemallProductService {
     LitemallProduct.Column[] columns = new LitemallProduct.Column[]{LitemallProduct.Column.id, LitemallProduct.Column.name, LitemallProduct.Column.brief, LitemallProduct.Column.picUrl};
     @Resource
     private LitemallProductMapper productMapper;
+    @Resource
+    private LitemallSeriesService seriesService;
 
     /**
      * 获取分类下的商品
      *
-     * @param catId
+     * @param seriesId
      * @param offset
      * @param limit
      * @return
      */
-    public List<LitemallProduct> queryBySeries(Integer catId, int offset, int limit) {
+    public List<LitemallProduct> queryBySeries(Integer seriesId, int offset, int limit) {
         LitemallProductExample example = new LitemallProductExample();
-        if (catId != null){
-            example.or().andSeriesIdEqualTo(catId).andDeletedEqualTo(false);
+        LitemallSeries series = seriesService.findById(seriesId);
+        if("L1".equals(series.getLevel())){
+            List<LitemallSeries> seriesList = seriesService.queryByPid(seriesId);
+            if(seriesList.size() > 0){
+                example.or().andSeriesIdIn(seriesList.stream().map(LitemallSeries::getId).collect(toList())).andDeletedEqualTo(false);
+            }else {
+                example.or().andSeriesIdEqualTo(seriesId).andDeletedEqualTo(false);
+            }
+        }else {
+            example.or().andSeriesIdEqualTo(seriesId).andDeletedEqualTo(false);
         }
+
         example.setOrderByClause("add_time desc");
         PageHelper.startPage(offset, limit);
-
-        return productMapper.selectByExampleSelective(example, columns);
+        return productMapper.selectByExampleSelective(example);
     }
 
     public List<LitemallProduct> querySelective(String name, Integer page, Integer size, String sort, String order) {

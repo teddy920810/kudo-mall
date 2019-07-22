@@ -23,6 +23,12 @@ public class LitemallCustomizedService {
         return customizedMapper.selectByExample(example);
     }
 
+    public List<LitemallCustomized> queryByType(String type) {
+        LitemallCustomizedExample example = new LitemallCustomizedExample();
+        example.or().andTypeEqualTo(type).andDeletedEqualTo(false);
+        return customizedMapper.selectByExample(example);
+    }
+
     public void add(LitemallCustomized customized) {
         customized.setAddTime(LocalDateTime.now());
         customized.setUpdateTime(LocalDateTime.now());

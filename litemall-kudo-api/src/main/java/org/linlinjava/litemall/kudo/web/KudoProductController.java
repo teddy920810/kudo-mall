@@ -12,6 +12,7 @@ import org.linlinjava.litemall.db.service.LitemallProductService;
 import org.linlinjava.litemall.kudo.service.KudoProductService;
 import org.linlinjava.litemall.kudo.vo.SeriesVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,18 +40,21 @@ public class KudoProductController {
      * 产品列表
      */
     @GetMapping("/")
-    public Object list(Integer seriesId,
+    public Object list(@RequestParam(required = false)Integer seriesId,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit) {
-        List<LitemallProduct> productList = productService.queryBySeries(seriesId,page,limit);
-        PageInfo<LitemallProduct> pagedList = PageInfo.of(productList);
+                       @RequestParam(defaultValue = "9") Integer limit) {
 
         List<SeriesVo> seriesList = kudoProductService.getAllSeries();
 
-        if (seriesId==null){
+        if (StringUtils.isEmpty(seriesId) || seriesId == 0){
             seriesId = seriesList.get(0).getId();
         }
+
         SeriesVo currentSeries = kudoProductService.getCurrentSeries(seriesId);
+
+        List<LitemallProduct> productList = productService.queryBySeries(seriesId,page,limit);
+        PageInfo<LitemallProduct> pagedList = PageInfo.of(productList);
+
         Map<String, Object> data = new HashMap<>();
         data.put("productList", productList);
         data.put("seriesList", seriesList);

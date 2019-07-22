@@ -155,4 +155,13 @@ public class JacksonUtil {
         return null;
     }
 
+    public static <T> T json2Obj(String jsonStr, Class<T> clazz) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(jsonStr, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
