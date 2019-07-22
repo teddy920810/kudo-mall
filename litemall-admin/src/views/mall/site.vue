@@ -251,7 +251,7 @@ export default {
     },
     uploadPicUrl(response, dom, index) {
       console.log(response, dom, index)
-      if(index === undefined){
+      if (index === undefined) {
         this.dataForm[dom].picUrl = response.data.url
         console.log(this.dataForm[dom])
       } else {
