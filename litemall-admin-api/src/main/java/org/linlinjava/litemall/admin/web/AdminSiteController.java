@@ -24,7 +24,7 @@ public class AdminSiteController {
 
     @RequiresPermissions("admin:site:list")
     @RequiresPermissionsDesc(menu={"商场管理" , "网站图文设置"}, button="详情")
-    @GetMapping()
+    @GetMapping("/list")
     public Object listMall() {
         Map<String, LitemallSite> data = siteService.queryAll();
         return ResponseUtil.ok(data);
@@ -32,7 +32,7 @@ public class AdminSiteController {
 
     @RequiresPermissions("admin:site:update")
     @RequiresPermissionsDesc(menu={"商场管理" , "网站图文设置"}, button="编辑")
-    @PostMapping("")
+    @PostMapping("/update")
     public Object updateMall(@RequestBody Map<String,LitemallSite> data ) {
         siteService.updateSite(data);
         return ResponseUtil.ok();
