@@ -589,7 +589,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
+  /*{
     path: 'external-link',
     component: Layout,
     redirect: 'noredirect',
@@ -629,7 +629,7 @@ export const asyncRouterMap = [
         meta: { title: '快递鸟', icon: 'link' }
       }
     ]
-  },
+  },*/
   {
     path: '/profile',
     component: Layout,
