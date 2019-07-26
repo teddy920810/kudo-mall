@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-width="300px">
+    <el-form ref="dataForm" :model="dataForm" status-icon label-width="300px">
       <el-form-item label="商场名称" prop="litemall_mall_name">
         <el-input v-model="dataForm.litemall_mall_name"/>
       </el-form-item>
@@ -99,7 +99,7 @@ export default {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    width: 120px;
+    width: 200px;
   }
   .avatar-uploader :hover {
     border-color: #20a0ff;
@@ -107,14 +107,14 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 120px;
-    height: 120px;
-    line-height: 120px;
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
     text-align: center;
   }
   .avatar {
-    width: 145px;
-    height: 145px;
+    width: 200px;
+    height: 200px;
     display: block;
   }
 </style>

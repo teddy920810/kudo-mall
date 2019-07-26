@@ -589,7 +589,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-  /*{
+  /* {
     path: 'external-link',
     component: Layout,
     redirect: 'noredirect',
