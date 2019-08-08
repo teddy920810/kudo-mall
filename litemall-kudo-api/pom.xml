@@ -13,47 +13,14 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.linlinjava</groupId>
             <artifactId>litemall-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-lang</artifactId>
-                    <groupId>commons-lang</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.linlinjava</groupId>
             <artifactId>litemall-db</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-pay</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>qrcode-utils</artifactId>
-                    <groupId>com.github.binarywang</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-miniapp</artifactId>
-        </dependency>
-        
-        <dependency>
-		    <groupId>com.auth0</groupId>
-		    <artifactId>java-jwt</artifactId>
-		    <version>3.4.1</version>
-		</dependency>
 
     </dependencies>
 
