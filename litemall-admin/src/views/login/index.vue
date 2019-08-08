@@ -24,18 +24,18 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div style="position:relative">
-        <div class="tips">
+        <!--<div class="tips">
           <span> 超级管理员用户名: admin123</span>
           <span> 超级管理员用户名：admin123</span>
-        </div>
+        </div>-->
         <div class="tips">
-          <span> 商城管理员用户名: mall123</span>
-          <span> 商城管理员用户名：mall123</span>
+          <span> 商城管理员用户名: kudo123</span>
+          <span> 商城管理员用户名：123456</span>
         </div>
-        <div class="tips">
+        <!--<div class="tips">
           <span> 推广管理员用户名: promotion123</span>
           <span> 推广管理员用户名：promotion123</span>
-        </div>
+        </div>-->
       </div>
     </el-form>
 
@@ -62,8 +62,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin123',
-        password: 'admin123'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
