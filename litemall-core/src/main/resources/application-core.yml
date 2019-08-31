@@ -108,7 +108,7 @@ litemall:
       bucketName: litemall
     # 七牛云对象存储配置信息
     qiniu:
-      endpoint: http://pv2uyb7vr.bkt.clouddn.com
+      endpoint: http://image.kuanduhome.com
       accessKey: HKD8ScF3hY9WfLI1HAC_wDSVHVLn01oJc6aqe_hn
       secretKey: FU8bFl_NuzWqD2SJ6Pe9hnhLyJqZI9XX3RWB194C
       bucketName: litemall

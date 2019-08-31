@@ -59,6 +59,13 @@ public class StorageService {
         return storageInfo;
     }
 
+    public String store(InputStream inputStream, String fileName) {
+        String key = generateKey(fileName);
+        storage.store(inputStream,0 ,null,key);
+        String url = generateUrl(key);
+        return url;
+    }
+
     private String generateKey(String originalFilename) {
         int index = originalFilename.lastIndexOf('.');
         String suffix = originalFilename.substring(index);
