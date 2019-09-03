@@ -59,11 +59,15 @@ public class StorageService {
         return storageInfo;
     }
 
-    public String store(InputStream inputStream, String fileName) {
+    public LitemallStorage store(InputStream inputStream, String fileName) {
         String key = generateKey(fileName);
         storage.store(inputStream,0 ,null,key);
         String url = generateUrl(key);
-        return url;
+        LitemallStorage storageInfo = new LitemallStorage();
+        storageInfo.setName(fileName);
+        storageInfo.setKey(key);
+        storageInfo.setUrl(url);
+        return storageInfo;
     }
 
     private String generateKey(String originalFilename) {

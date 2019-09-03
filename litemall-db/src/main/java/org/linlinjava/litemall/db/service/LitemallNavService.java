@@ -50,6 +50,17 @@ public class LitemallNavService {
         return navMapper.selectByPrimaryKey(id);
     }
 
+    public LitemallNav findByPid(Integer pid) {
+        LitemallNavExample example = new LitemallNavExample();
+        example.or().andPidEqualTo(pid).andDeletedEqualTo(false);
+        return navMapper.selectOneByExample(example);
+    }
+    public LitemallNav findByName(String name) {
+        LitemallNavExample example = new LitemallNavExample();
+        example.or().andNameEqualTo(name).andDeletedEqualTo(false);
+        return navMapper.selectOneByExample(example);
+    }
+
     public List<LitemallNav> querySelective(String id, String name, Integer page, Integer size, String sort, String order) {
         LitemallNavExample example = new LitemallNavExample();
         LitemallNavExample.Criteria criteria = example.createCriteria();
