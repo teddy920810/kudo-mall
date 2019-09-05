@@ -200,24 +200,33 @@ public class TimeTablesController {
             }
         }
 
+        int num = 0;
         String startTime = "";
         String endTime="";
+        String startTime2 = "";
+        String endTime2="";
         switch (time.toString()) {
             case "晚上":
                 startTime = "19:00:00";
                 endTime = "22:00:00";
+                num = 1;
                 break;
             case "上下午":
                 startTime = "9:00:00";
-                endTime = "17:00:00";
+                endTime = "12:00:00";
+                startTime2 = "14:00:00";
+                endTime2 = "17:00:00";
+                num = 2;
                 break;
             case "下午":
                 startTime = "14:00:00";
                 endTime = "17:00:00";
+                num = 1;
                 break;
             case "上午":
                 startTime = "9:00:00";
                 endTime = "12:00:00";
+                num = 1;
         }
 
         Calendar date = Calendar.getInstance();
@@ -225,8 +234,16 @@ public class TimeTablesController {
             String s3 = s1.substring(0,f2);
             String[] s4 = s3.split("/");
             for (int i = 0; i < s4.length; i++) {
-                TaskItem taskItem = new TaskItem(className,courseName,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+endTime,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+startTime,delay,classRoom);
-                taskItemList.add(taskItem);
+                if(num==1){
+                    TaskItem taskItem = new TaskItem(className,courseName,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+endTime,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+startTime,delay,classRoom);
+                    taskItemList.add(taskItem);
+                }else if(num==2){
+                    TaskItem taskItem1 = new TaskItem(className,courseName,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+endTime,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+startTime,delay,classRoom);
+                    taskItemList.add(taskItem1);
+                    TaskItem taskItem2 = new TaskItem(className,courseName,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+endTime2,date.get(Calendar.YEAR)+"-"+s4[i].replace(".","-")+" "+startTime2,delay,classRoom);
+                    taskItemList.add(taskItem2);
+                }
+
             }
 
         }
